@@ -6,5 +6,7 @@ namespace Kylen.Domain.Repository
     public interface IRepository
     {
         IEnumerable<DrinkStatus> GetDrinkStatus();
+
+        void TakeDrinks(TakeDrink Drink);
     }
 }

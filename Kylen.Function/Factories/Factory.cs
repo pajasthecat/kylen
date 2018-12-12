@@ -1,10 +1,18 @@
-﻿using Kylen.Domain.Services;
+﻿using Kylen.Domain.Models;
+using Kylen.Domain.Services;
+using Kylen.Function.Contracts;
 using Kylen.Infrastructure.Repository;
 
 namespace Kylen.Function.Factories
 {
     internal class Factory
     {
+        Service _service;
+        public Factory()
+        {
+            var repository = new DrinksRepository();
+            _service = new Service(repository);
+        }
         public object GetResult(string command)
         {
             switch (command)
@@ -17,10 +25,8 @@ namespace Kylen.Function.Factories
         }
 
         private object GetDrinkStatus()
-        {
-            var repository = new DrinksRepository();
-            var service = new Service(repository);
-            return service.GetDrinkStatuses();
+        {         
+            return _service.GetDrinkStatuses();
         }
     }
 }

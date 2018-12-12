@@ -18,5 +18,10 @@ namespace Kylen.Domain.Services
             var drinkStatuses = _repository.GetDrinkStatus();
             return drinkStatuses;
         }
+
+        public void TakeDrink(TakeDrink drink)
+        {
+            _repository.TakeDrinks(drink);
+        }
     }
 }

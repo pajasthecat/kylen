@@ -1,4 +1,5 @@
-﻿using Kylen.Domain.Repository;
+﻿using Kylen.Domain.Models;
+using Kylen.Domain.Repository;
 using Kylen.Infrastructure.Models;
 using RestSharp;
 using System.Collections.Generic;
@@ -8,6 +9,17 @@ namespace Kylen.Infrastructure.Repository
 {
     public class DrinksRepository : IRepository
     {
+
+        public void TakeDrinks(TakeDrink drink)
+        {
+            var client = new RestClient("https://dryck.co/api/1.0/units/collector1/drinks");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("content-type", "application/x-www-form-urlencoded");
+            request.AddParameter("application/x-www-form-urlencoded",
+                $"item={drink.Item}&user={drink.User}&quantity={drink.Quantity}", ParameterType.RequestBody);
+            var response = client.Execute(request);
+        }
+
         public IEnumerable<Domain.Models.DrinkStatus> GetDrinkStatus()
         {
             var response = GetDrinks();
@@ -26,7 +38,7 @@ namespace Kylen.Infrastructure.Repository
 
         private static IEnumerable<Domain.Models.DrinkStatus> DeserializeResponse(IRestResponse response)
         {
-           var drinkStatus = SimpleJson.SimpleJson.DeserializeObject<IEnumerable<DrinkStatus>>(response.Content);
+            var drinkStatus = SimpleJson.SimpleJson.DeserializeObject<IEnumerable<Infrastructure.Models.DrinkStatus>>(response.Content);
             return drinkStatus.Select(dr => dr.ToDrinkStatus(dr));
         }
     }
