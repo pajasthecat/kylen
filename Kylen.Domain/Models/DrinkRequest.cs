@@ -2,7 +2,8 @@
 {
     public class DrinkRequest
     {
-        public Drinks Drinks { get; set; }
+        public EnumType EnumType { get; set; }
+        public Drink Drinks { get; set; }
         public string User { get; set; }
     }
 }

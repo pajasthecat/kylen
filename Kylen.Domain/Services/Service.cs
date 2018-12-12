@@ -13,15 +13,21 @@ namespace Kylen.Domain.Services
             _repository = repository;
         }
 
-        public IEnumerable<DrinkStatus> GetDrinkStatuses()
+        public Response GetDrinkStatuses()
         {
             var drinkStatuses = _repository.GetDrinkStatus();
             return drinkStatuses;
         }
 
-        public void TakeDrink(DrinkRequest drinkRequest)
+        public Response TakeDrink(DrinkRequest drinkRequest)
         {
-            _repository.TakeDrinks(drinkRequest);
+            drinkRequest.Drinks.Quantity = -drinkRequest.Drinks.Quantity;
+            return _repository.TakeDrinks(drinkRequest);
+        }
+
+        public Response AddDrink(DrinkRequest drinkRequest)
+        {
+            return _repository.AddDrinks(drinkRequest);
         }
     }
 }

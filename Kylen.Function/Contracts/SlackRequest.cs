@@ -1,9 +1,10 @@
 ﻿using Kylen.Domain.Models;
 using Microsoft.AspNetCore.Http;
+using System;
 
 namespace Kylen.Function.Contracts
 {
-    public class SlackCommandPayload
+    public class SlackRequest
     {
         public string token { get; set; }
         public string team_id { get; set; }
@@ -19,11 +20,34 @@ namespace Kylen.Function.Contracts
         public string response_url { get; set; }
         public string trigger_id { get; set; }
 
-        public SlackCommandPayload(IFormCollection formCollection)
+        public SlackRequest(IFormCollection formCollection)
         {
             user_name = formCollection["user_name"].ToString();
             command = formCollection["command"].ToString();
             text = formCollection["text"].ToString();
+        }
+
+        public DrinkRequest ToDrinkRequest( SlackRequest slackRequest)
+        {
+            var texts = slackRequest.text.Split(new char[] { ' ' }, 3);
+            var enumType = (EnumType)Enum.Parse(typeof(EnumType), texts[0].ToUpper());
+            if(enumType == EnumType.STATUS)
+            {
+                return new DrinkRequest
+                {
+                    EnumType = enumType
+                };
+            };
+            return new DrinkRequest
+            {
+                EnumType = enumType,
+                User = slackRequest.user_name,
+                Drinks = new Drink
+                {
+                    Name = texts[2],
+                    Quantity = Convert.ToInt32(texts[1])
+                }
+            };
         }
     }
 }

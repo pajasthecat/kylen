@@ -1,4 +1,6 @@
-﻿using Kylen.Domain.Repository;
+﻿using System;
+using Kylen.Domain.Models;
+using Kylen.Domain.Repository;
 using Kylen.Domain.Services;
 
 namespace Kylen.Domain.Factories
@@ -10,18 +12,33 @@ namespace Kylen.Domain.Factories
         {
             _service = new Service(repository);
         }
-        public object GetResult(string command)
+
+        public Response GetResult(DrinkRequest request)
         {
-            switch (command)
+            switch (request.EnumType)
             {
-                case "/kylstatus":
+                case EnumType.ADD:
+                    return AddDrinks(request);
+                case EnumType.TAKE:
+                    return TakeDrinks(request);
+                case EnumType.STATUS:
                     return GetDrinkStatus();
                 default:
-                    return null;
+                    return new Response("Hittar inte vad du vill göra. Förösk igen.");
             }
         }
 
-        private object GetDrinkStatus()
+        private Response AddDrinks(DrinkRequest request)
+        {
+            return _service.AddDrink(request);
+        }
+
+        private Response TakeDrinks(DrinkRequest request)
+        {
+            return _service.TakeDrink(request);
+        }
+
+        private Response GetDrinkStatus()
         {
             return _service.GetDrinkStatuses();
         }
