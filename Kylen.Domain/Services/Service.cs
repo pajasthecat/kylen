@@ -19,9 +19,9 @@ namespace Kylen.Domain.Services
             return drinkStatuses;
         }
 
-        public void TakeDrink(TakeDrink drink)
+        public void TakeDrink(DrinkRequest drinkRequest)
         {
-            _repository.TakeDrinks(drink);
+            _repository.TakeDrinks(drinkRequest);
         }
     }
 }

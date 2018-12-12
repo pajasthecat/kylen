@@ -7,6 +7,6 @@ namespace Kylen.Domain.Repository
     {
         IEnumerable<DrinkStatus> GetDrinkStatus();
 
-        void TakeDrinks(TakeDrink Drink);
+        void TakeDrinks(DrinkRequest drinkRequest);
     }
 }

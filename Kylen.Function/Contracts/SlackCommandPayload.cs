@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Kylen.Domain.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Kylen.Function.Contracts
 {

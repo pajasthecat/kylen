@@ -10,13 +10,13 @@ namespace Kylen.Infrastructure.Repository
     public class DrinksRepository : IRepository
     {
 
-        public void TakeDrinks(TakeDrink drink)
+        public void TakeDrinks(DrinkRequest drinkRequest)
         {
             var client = new RestClient("https://dryck.co/api/1.0/units/collector1/drinks");
             var request = new RestRequest(Method.POST);
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
             request.AddParameter("application/x-www-form-urlencoded",
-                $"item={drink.Item}&user={drink.User}&quantity={drink.Quantity}", ParameterType.RequestBody);
+                $"item={drinkRequest.Drinks.Name}&user={drinkRequest.User}&quantity={drinkRequest.Drinks.Quantity}", ParameterType.RequestBody);
             var response = client.Execute(request);
         }
 
