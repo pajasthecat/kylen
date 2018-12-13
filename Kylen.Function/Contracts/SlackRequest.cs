@@ -66,7 +66,7 @@ namespace Kylen.Function.Contracts
                 NormalizeDrinkName(stringBuilder, drinkName);
             }
 
-            return stringBuilder.ToString();
+            return stringBuilder.ToString().TrimEnd();
         }
 
         private static void NormalizeDrinkName(StringBuilder stringBuilder, string drinkName)

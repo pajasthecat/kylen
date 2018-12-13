@@ -15,27 +15,25 @@ namespace Kylen.Function
         [FunctionName("kylen")]
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequest req, TraceWriter log)
         {
-            var repository = new DrinksRepository();
-            var factory = new Factory(repository);
+            var factory = StartUp();
             var request = new SlackRequest(req.Form);
             try
             {
+                log.Info(request.user_name);
                 var result = factory.GetResult(request.ToDrinkRequest(request));
-                var response = new SlackResponse
-                {
-                    Text = result.Message
-                };
-                return new OkObjectResult(response);
+                return new OkObjectResult(new SlackResponse(result.Message));
             }
             catch (System.Exception)
             {
-                var response = new SlackResponse
-                {
-                    Text = "Tyvärr gick något fel."
-                };
-
-                return new OkObjectResult(response);
+                return new OkObjectResult(new SlackResponse("Tyvärr gick något fel."));
             }
+        }
+
+        private static Factory StartUp()
+        {
+            var repository = new DrinksRepository();
+            var factory = new Factory(repository);
+            return factory;
         }
     }
 }
