@@ -1,6 +1,7 @@
 ﻿using Kylen.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Text;
 
 namespace Kylen.Function.Contracts
 {
@@ -31,23 +32,49 @@ namespace Kylen.Function.Contracts
         {
             var texts = slackRequest.text.Split(new char[] { ' ' }, 3);
             var enumType = (EnumType)Enum.Parse(typeof(EnumType), texts[0].ToUpper());
-            if(enumType == EnumType.STATUS)
+            if (enumType == EnumType.STATUS)
             {
                 return new DrinkRequest
                 {
                     EnumType = enumType
                 };
             };
+
+            var drinkName = GetDrinkName(texts);
+
             return new DrinkRequest
             {
                 EnumType = enumType,
                 User = slackRequest.user_name,
                 Drinks = new Drink
                 {
-                    Name = texts[2],
+                    Name = drinkName,
                     Quantity = Convert.ToInt32(texts[1])
                 }
             };
+        }
+
+        private static string GetDrinkName(string[] texts)
+        {
+            var stringBuilder = new StringBuilder();
+            var drinkNames = texts[2]
+                .ToLower()
+                .Split(new char[] { ' ' });
+
+            foreach (var drinkName in drinkNames)
+            {
+                NormalizeDrinkName(stringBuilder, drinkName);
+            }
+
+            return stringBuilder.ToString();
+        }
+
+        private static void NormalizeDrinkName(StringBuilder stringBuilder, string drinkName)
+        {
+            var drinkNameLetters = drinkName.ToCharArray();
+            drinkNameLetters[0] = char.ToUpper(drinkNameLetters[0]);
+            stringBuilder.Append(new string(drinkNameLetters));
+            stringBuilder.Append(" ");
         }
     }
 }

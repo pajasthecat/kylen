@@ -24,7 +24,7 @@ namespace Kylen.Domain.Factories
                 case EnumType.STATUS:
                     return GetDrinkStatus();
                 default:
-                    return new Response("Hittar inte vad du vill göra. Förösk igen.");
+                    return new Response("Hittar inte vad du vill göra. Försök igen.");
             }
         }
 

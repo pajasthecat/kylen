@@ -18,12 +18,24 @@ namespace Kylen.Function
             var repository = new DrinksRepository();
             var factory = new Factory(repository);
             var request = new SlackRequest(req.Form);
-            var result = factory.GetResult(request.ToDrinkRequest(request));
-            var response = new SlackResponse
+            try
             {
-                Text = result.Message
-            };
-            return new OkObjectResult(result);
+                var result = factory.GetResult(request.ToDrinkRequest(request));
+                var response = new SlackResponse
+                {
+                    Text = result.Message
+                };
+                return new OkObjectResult(response);
+            }
+            catch (System.Exception)
+            {
+                var response = new SlackResponse
+                {
+                    Text = "Tyvärr gick något fel."
+                };
+
+                return new OkObjectResult(response);
+            }
         }
     }
 }
