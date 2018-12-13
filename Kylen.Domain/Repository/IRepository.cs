@@ -5,6 +5,10 @@ namespace Kylen.Domain.Repository
 {
     public interface IRepository
     {
-        IEnumerable<DrinkStatus> GetDrinkStatus();
+        Response GetDrinkStatus();
+
+        Response TakeDrinks(DrinkRequest drinkRequest);
+
+        Response AddDrinks(DrinkRequest drinkRequest);
     }
 }

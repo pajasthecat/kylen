@@ -1,5 +1,6 @@
+using Kylen.Domain.Factories;
 using Kylen.Function.Contracts;
-using Kylen.Function.Factories;
+using Kylen.Infrastructure.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -14,10 +15,14 @@ namespace Kylen.Function
         [FunctionName("kylen")]
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequest req, TraceWriter log)
         {
-            var slack = new SlackCommandPayload(req.Form);
-            var factory = new Factory();
-            var result = factory.GetResult(slack.command);
-            if (result == null) return new NotFoundResult();
+            var repository = new DrinksRepository();
+            var factory = new Factory(repository);
+            var request = new SlackRequest(req.Form);
+            var result = factory.GetResult(request.ToDrinkRequest(request));
+            var response = new SlackResponse
+            {
+                Text = result.Message
+            };
             return new OkObjectResult(result);
         }
     }
