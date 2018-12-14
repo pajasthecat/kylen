@@ -1,6 +1,8 @@
 ﻿using Kylen.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Kylen.Function.Contracts
@@ -42,16 +44,37 @@ namespace Kylen.Function.Contracts
 
             var drinkName = GetDrinkName(texts);
 
+            var user = GetUser(slackRequest.user_name);
+
             return new DrinkRequest
             {
                 EnumType = enumType,
-                User = slackRequest.user_name,
+                User = user,
                 Drinks = new Drink
                 {
                     Name = drinkName,
                     Quantity = Convert.ToInt32(texts[1])
                 }
             };
+        }
+
+        private string GetUser(string slackUser)
+        {
+            var namePairs = new Dictionary<string, string>
+            {
+                {"marcus.olsson", "Marcus" },
+                {"sebastian.oberg", "Sebastian" },
+                {"olof.pettersson", "Olof" },
+                {"ida.ahlstrom", "Ida" },
+                {"fredrik.winblad", "Fredrik W" }
+            };
+
+            var userName = namePairs
+                .Where(np => np.Key == slackUser)
+                .Single()
+                .Value;
+
+            return userName;
         }
 
         private static string GetDrinkName(string[] texts)
