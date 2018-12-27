@@ -30,11 +30,11 @@ namespace Kylen.Function.Contracts
             text = formCollection["text"].ToString();
         }
 
-        public DrinkRequest ToDrinkRequest( SlackRequest slackRequest)
+        public DrinkRequest ToDrinkRequest(SlackRequest slackRequest)
         {
             var texts = slackRequest.text.Split(new char[] { ' ' }, 3);
-            var enumType = (EnumType)Enum.Parse(typeof(EnumType), texts[0].ToUpper());
-            if (enumType == EnumType.STATUS)
+            var enumType = (EnumType)Enum.Parse(typeof(EnumType), texts[0].ToUpper().Trim());
+            if (enumType == EnumType.STATUS || enumType == EnumType.BLAMEGAME)
             {
                 return new DrinkRequest
                 {

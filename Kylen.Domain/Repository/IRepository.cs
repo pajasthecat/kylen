@@ -10,5 +10,6 @@ namespace Kylen.Domain.Repository
         Response TakeDrinks(DrinkRequest drinkRequest);
 
         Response AddDrinks(DrinkRequest drinkRequest);
+        Response GetParticipantStatus();
     }
 }

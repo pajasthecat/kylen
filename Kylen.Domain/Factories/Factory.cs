@@ -23,9 +23,16 @@ namespace Kylen.Domain.Factories
                     return TakeDrinks(request);
                 case EnumType.STATUS:
                     return GetDrinkStatus();
+                case EnumType.BLAMEGAME:
+                    return GetParticipantStatus();
                 default:
                     return new Response("Hittar inte vad du vill göra. Försök igen.");
             }
+        }
+
+        private Response GetParticipantStatus()
+        {
+            return _service.GetParticipantStatus();
         }
 
         private Response AddDrinks(DrinkRequest request)

@@ -4,6 +4,7 @@
     {
         ADD = 0,
         TAKE = 1,
-        STATUS = 2
+        STATUS = 2,
+        BLAMEGAME = 3
     }
 }

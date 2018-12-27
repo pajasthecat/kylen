@@ -38,9 +38,16 @@ namespace Kylen.Infrastructure.Repository
             return response;
         }
 
+        public Response GetParticipantStatus()
+        {
+            var response = Get("https://dryck.co/api/1.0/units/collector1/status");
+            var participantStatuses = DeserializeResponse(response);
+            return new Response("");
+        }
+
         public Response GetDrinkStatus()
         {
-            var response = GetDrinks();
+            var response = Get("https://dryck.co/api/1.0/units/collector1/drinks");
             var drinkStatuses = DeserializeResponse(response);
 
             var message = String.Join(", ", drinkStatuses
@@ -50,9 +57,9 @@ namespace Kylen.Infrastructure.Repository
             return new Response(message);
         }
 
-        private static IRestResponse GetDrinks()
+        private static IRestResponse Get(string uri)
         {
-            var client = new RestClient("https://dryck.co/api/1.0/units/collector1/drinks");
+            var client = new RestClient(uri);
             var request = new RestRequest(Method.GET);
             var response = client.Execute(request);
             return response;

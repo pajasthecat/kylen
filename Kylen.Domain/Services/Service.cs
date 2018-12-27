@@ -1,5 +1,6 @@
 ﻿using Kylen.Domain.Models;
 using Kylen.Domain.Repository;
+using System;
 using System.Collections.Generic;
 
 namespace Kylen.Domain.Services
@@ -28,6 +29,11 @@ namespace Kylen.Domain.Services
         public Response AddDrink(DrinkRequest drinkRequest)
         {
             return _repository.AddDrinks(drinkRequest);
+        }
+
+        internal Response GetParticipantStatus()
+        {
+            return _repository.GetParticipantStatus();
         }
     }
 }
